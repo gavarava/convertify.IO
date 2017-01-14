@@ -22,12 +22,7 @@ public class HTMLTemplate implements Template {
 		return this.htmlTemplate;
 	}
 
-	public void setHTMLTemplate(File htmlTemplate) {
-		this.htmlTemplate = htmlTemplate;
-	}
-
-	@Override
-	public String getTemplateName() { return this.htmlTemplate.getName(); }
+	public String getName() { return this.htmlTemplate.getName(); }
 
 	@Override
 	public boolean isValid() {
@@ -37,7 +32,6 @@ public class HTMLTemplate implements Template {
 
 	/**
 	 * Returns the complete template File as a String
-	 * @param template
 	 * @return
 	 */
 	@Override

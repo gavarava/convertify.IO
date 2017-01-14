@@ -10,60 +10,50 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
 
-import com.converter.SpreadsheetToTemplateConverter;
+import com.converter.SpreadsheetConverter;
 import com.html.template.HTMLTemplate;
 import com.spreadsheet.reader.XLSToJavaMapper;
 
 /**
- * Creates the base for converting Excel Sheet Details into an HTML file
- * according to a template
- * 
+ * Creates the base for converting Excel Sheet into an HTML file
+ * according to an HTML template
  * @author gaurav.edekar
- * 
  */
-public class XLSToHtmlConverter implements SpreadsheetToTemplateConverter {
+public class ExcelToHtmlConverter implements SpreadsheetConverter {
 
-	private static final String PLC_HOLDR_PREFIX = "k:";
+	private static final String PLACE_HOLDER_PREFIX = "k:";
 
-	private static final String PLC_HOLDR_SUFFIX = ":k";
+	private static final String PLACE_HOLDER_SUFFIX = ":k";
 
-	private File xLSSheet;
+	private File excelSheet;
 
-	private String destinationDir;
+	private String destinationDirectory;
 
-	public XLSToHtmlConverter(File pXLSSheet, String pDestinationDir) {
-		this.destinationDir = pDestinationDir;
-		this.xLSSheet = pXLSSheet;
+	public ExcelToHtmlConverter(File pXLSSheet, String pDestinationDir) {
+		this.destinationDirectory = pDestinationDir;
+		this.excelSheet = pXLSSheet;
 	}
 
-	public File getXLSSheet() {
-		return xLSSheet;
+	public File getSpreadsheet() {
+		return excelSheet;
 	}
 
-	public void setXLSSheet(File mXLSSheet) {
-		this.xLSSheet = mXLSSheet;
-	}
-
-	public String getDestinationDir() {
-		return destinationDir;
-	}
-
-	public void setDestinationDir(String mDestinationDir) {
-		this.destinationDir = mDestinationDir;
+	public String getDestinationDirectory() {
+		return destinationDirectory;
 	}
 
 	/**
 	 * Convert an Excel Sheet to an HTML conforming to the template
 	 */
 	@Override
-	public void convertSpreadsheetToTemplate() {
+	public void convert() {
 
-		XLSToJavaMapper excelDataMap = new XLSToJavaMapper(getXLSSheet());
+		XLSToJavaMapper excelDataMap = new XLSToJavaMapper(getSpreadsheet());
 
 		if (excelDataMap.isSheetValid()) {
 
 			Map<String, List<Map<String, String>>> fileTemplateMap = excelDataMap
-					.buildDataMapFromSpreadsheet(getXLSSheet());
+					.buildMapFromSpreadsheet(getSpreadsheet());
 
 			if (fileTemplateMap != null && !fileTemplateMap.isEmpty()) {
 				String templateFile = "";
@@ -96,11 +86,11 @@ public class XLSToHtmlConverter implements SpreadsheetToTemplateConverter {
 										FileUtils
 												.writeStringToFile(
 														new File(
-																getDestinationDir()
+																getDestinationDirectory()
 																		+ rowCount
 																		+ "_"
 																		+ htmlTemplate
-																				.getTemplateName()),
+																				.getName()),
 																		convertedTemplate);
 									} catch (IOException e) {
 										e.printStackTrace();
@@ -140,8 +130,8 @@ public class XLSToHtmlConverter implements SpreadsheetToTemplateConverter {
 
 		for (Entry<String, String> dataEntry : pDataMap.entrySet()) {
 			StringBuffer plcHolderBuffer = new StringBuffer();
-			plcHolderBuffer = plcHolderBuffer.append(PLC_HOLDR_PREFIX)
-					.append(dataEntry.getKey()).append(PLC_HOLDR_SUFFIX);
+			plcHolderBuffer = plcHolderBuffer.append(PLACE_HOLDER_PREFIX)
+					.append(dataEntry.getKey()).append(PLACE_HOLDER_SUFFIX);
 			String placeHolder = plcHolderBuffer.toString();
 			pTemplateString = pTemplateString.replaceAll(
 					Pattern.quote(placeHolder),

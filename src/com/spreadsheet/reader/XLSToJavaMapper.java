@@ -17,7 +17,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
-public class XLSToJavaMapper implements SpreadsheetMapConverter {
+public class XLSToJavaMapper implements SpreadsheetToMapConverter {
 
 	private static final int HEADER_ROW_INDEX = 0;
 
@@ -45,7 +45,7 @@ public class XLSToJavaMapper implements SpreadsheetMapConverter {
 	 * information
 	 */
 	@Override
-	public Map<String, List<Map<String, String>>> buildDataMapFromSpreadsheet(
+	public Map<String, List<Map<String, String>>> buildMapFromSpreadsheet(
 			File spreadsheet) {
 		if (isSheetValid()) {
 			Map<String, List<Map<String, String>>> fileTemplateMap = new TreeMap<String, List<Map<String, String>>>();
