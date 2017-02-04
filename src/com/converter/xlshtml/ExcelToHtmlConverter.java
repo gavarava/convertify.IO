@@ -12,7 +12,7 @@ import org.apache.commons.io.FileUtils;
 
 import com.converter.SpreadsheetConverter;
 import com.html.template.HTMLTemplate;
-import com.spreadsheet.reader.XLSToJavaMapper;
+import com.spreadsheet.reader.ExcelToJavaMapper;
 
 /**
  * Creates the base for converting Excel Sheet into an HTML file
@@ -48,9 +48,9 @@ public class ExcelToHtmlConverter implements SpreadsheetConverter {
 	@Override
 	public void convert() {
 
-		XLSToJavaMapper excelDataMap = new XLSToJavaMapper(getSpreadsheet());
+		ExcelToJavaMapper excelDataMap = new ExcelToJavaMapper(getSpreadsheet());
 
-		if (excelDataMap.isSheetValid()) {
+		if (excelDataMap.validate()) {
 
 			Map<String, List<Map<String, String>>> fileTemplateMap = excelDataMap
 					.buildMapFromSpreadsheet(getSpreadsheet());
