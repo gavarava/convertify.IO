@@ -10,12 +10,13 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.poi.EncryptedDocumentException;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
+
+import com.sun.media.sound.InvalidFormatException;
 
 public class ExcelToJavaMapper implements SpreadsheetToMapConverter {
 
@@ -44,7 +45,7 @@ public class ExcelToJavaMapper implements SpreadsheetToMapConverter {
 		if (validate()) {
 			try {
 				InputStream excelInpStream = new FileInputStream(spreadsheet);
-				Workbook workBook = WorkbookFactory.create(excelInpStream);
+				Workbook workBook = new HSSFWorkbook(excelInpStream);
 				Sheet sheet = workBook.getSheetAt(0);
 				Row headRow = sheet.getRow(HEADER_ROW_INDEX);
 
@@ -85,8 +86,6 @@ public class ExcelToJavaMapper implements SpreadsheetToMapConverter {
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (EncryptedDocumentException e) {
-				e.printStackTrace();
-			} catch (InvalidFormatException e) {
 				e.printStackTrace();
 			}
 			return fileTemplateMap;

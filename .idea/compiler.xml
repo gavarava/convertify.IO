@@ -6,11 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="convertify.IO" />
+        <module name="XLSToHTMLConverter" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="convertify.IO" target="1.8" />
+      <module name="XLSToHTMLConverter" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>
