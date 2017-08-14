@@ -10,7 +10,7 @@
 
     <build>
         <sourceDirectory>src</sourceDirectory>
-        <testSourceDirectory>test</testSourceDirectory>
+        <testSourceDirectory>functional-tests</testSourceDirectory>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -21,6 +21,12 @@
             </plugins>
         </pluginManagement>
     </build>
+
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>functional-tests</module>
+    </modules>
 
     <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
     <dependencies>

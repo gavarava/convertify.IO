@@ -36,8 +36,8 @@ public class ExcelToJavaMapper implements SpreadsheetToMapConverter {
 	/**
 	 * Create a nested map with an entry for each File to be generated & its
 	 * information
+	 * Java 8 @Override behöver inte som vi har en Default Method nu
 	 */
-	@Override
 	public Map<String, List<Map<String, String>>> buildMapFromSpreadsheet(
 			File spreadsheet) {
 

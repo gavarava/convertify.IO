@@ -45,7 +45,6 @@ public class ExcelToHtmlConverter implements SpreadsheetConverter {
 	/**
 	 * Convert an Excel Sheet to an HTML conforming to the template
 	 */
-	@Override
 	public void convert() {
 
 		ExcelToJavaMapper excelDataMap = new ExcelToJavaMapper(getSpreadsheet());
