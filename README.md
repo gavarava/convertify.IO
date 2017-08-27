@@ -11,14 +11,15 @@ The Spreadsheet is created in such a way that it contains the
 		Template Path in the First Column
 		Default Names of Output File will be TemplateName_01.html and so on if the name of template is TemplateName
 
+# Use mvn assembly:single to generate Jar File With Dependancies
 
 # Intention
 
     > Try BDD
-    > Use TDD   
+    > Use TDD
     > Refactor this code
     > Start a Spring Boot Microservice.
 
 
-# Example POM for SPOCK
+# Example POM for SPOCK, another BDD
 https://github.com/spockframework/spock-example
