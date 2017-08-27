@@ -12,6 +12,13 @@ The Spreadsheet is created in such a way that it contains the
 		Default Names of Output File will be TemplateName_01.html and so on if the name of template is TemplateName
 
 
+# Intention
+
+    > Try BDD
+    > Use TDD   
+    > Refactor this code
+    > Start a Spring Boot Microservice.
+
 
 # Example POM for SPOCK
 https://github.com/spockframework/spock-example
