@@ -24,7 +24,6 @@ public class HTMLTemplate implements Template {
 
 	public String getName() { return this.htmlTemplate.getName(); }
 
-	@Override
 	public boolean isValid() {
 		return (this.htmlTemplate != null && this.htmlTemplate.exists() && !this.htmlTemplate
 				.isDirectory());

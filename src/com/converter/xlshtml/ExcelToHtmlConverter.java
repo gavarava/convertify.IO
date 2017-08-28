@@ -45,14 +45,15 @@ public class ExcelToHtmlConverter implements SpreadsheetConverter {
 	/**
 	 * Convert an Excel Sheet to an HTML conforming to the template
 	 */
-	public void convert() {
+	public void convert() throws IOException {
 
-		ExcelToJavaMapper excelDataMap = new ExcelToJavaMapper(getSpreadsheet());
+		File spreadsheet = getSpreadsheet();
+		ExcelToJavaMapper excelDataMap = new ExcelToJavaMapper(spreadsheet);
 
 		if (excelDataMap.validate()) {
 
 			Map<String, List<Map<String, String>>> fileTemplateMap = excelDataMap
-					.buildMapFromSpreadsheet(getSpreadsheet());
+					.buildMapFromSpreadsheet(spreadsheet);
 
 			if (fileTemplateMap != null && !fileTemplateMap.isEmpty()) {
 				String templateFile = "";
@@ -61,7 +62,7 @@ public class ExcelToHtmlConverter implements SpreadsheetConverter {
 					templateFile = dataMapEntry.getKey();             
 
 					HTMLTemplate htmlTemplate = new HTMLTemplate(new File(
-							templateFile));
+							spreadsheet.getParent()+"\\"+templateFile+"\\"));
 
 					if (htmlTemplate.isValid()) {
 
@@ -85,7 +86,7 @@ public class ExcelToHtmlConverter implements SpreadsheetConverter {
 										FileUtils
 												.writeStringToFile(
 														new File(
-																getDestinationDirectory()
+																getDestinationDirectory()+"\\"+
 																		+ rowCount
 																		+ "_"
 																		+ htmlTemplate
@@ -95,26 +96,25 @@ public class ExcelToHtmlConverter implements SpreadsheetConverter {
 										e.printStackTrace();
 									}
 								} else {
-									System.err
-											.println("ERROR fetching data from Excel Sheet.");
+									throw new RuntimeException("ERROR fetching data from Excel Sheet.");
 								}
 								rowCount++;
 							}
 							System.out.println(rowCount-1 + " row/s for " +templateFile+ " have been processed successfully !!");
 
 						} else {
-							System.err.println("HTML Template <" + templateFile
+							throw new RuntimeException("HTML Template <" + templateFile
 									+ "> is blank.");
 						}
 
 					} else {
-						System.err.println("HTML Template <" + templateFile
+						throw new RuntimeException("HTML Template <" + templateFile
 								+ "> is invalid OR it does not exist.");
 					}
 				}
 			}
 		} else {
-			System.err.println("Not able to detect Excel Sheet.");
+			throw new RuntimeException("Not able to detect Excel Sheet.");
 		}
 	}
 

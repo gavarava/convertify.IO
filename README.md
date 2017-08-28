@@ -1,22 +1,21 @@
 # convertify.IO
-A typical Spreadsheet To Template Converter that can be used to auto generate repeatable HTML pages using a given template.
+A Simple Spreadsheet to HTML Converter that can be used to auto generate repeatable HTML pages using a given template.
 It converts XLS or XLSX files to an HTML template provided in a path.
-# How to use it ?
-Ideal way would be to export as a runnable JAR File, and execute the command with the following arguments to the jar file :-
-	 First Argument = Path of the Excel Sheet
-	 Second Argument = Destination Directory of the Converter
 
-# What is the structure of the spreadsheet ?	 
-The Spreadsheet is created in such a way that it contains the
-		Template Path in the First Column
-		Default Names of Output File will be TemplateName_01.html and so on if the name of template is TemplateName
+# Create Runnable jar with the following
+mvn clean compile assembly:single
+
+#Usage
+java -jar <JAR_NAME> <Path of the Excel Sheet> <OutputDestination>
+
+# BDD
+Check Cucumber feature. Run using mvn test.
 
 # Use mvn assembly:single to generate Jar File With Dependancies
 
 # Intention
-
-    > Try BDD
-    > Use TDD
+    > Basic Maven Configuration
+    > Behaviour Driven Development using Cucumber
     > Refactor this code
     > Start a Spring Boot Microservice.
 
