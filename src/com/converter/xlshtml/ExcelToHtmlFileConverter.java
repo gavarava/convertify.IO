@@ -8,18 +8,18 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.converter.FileConverter;
 import org.apache.commons.io.FileUtils;
 
-import com.converter.SpreadsheetConverter;
 import com.html.template.HTMLTemplate;
-import com.spreadsheet.reader.ExcelToJavaMapper;
+import com.spreadsheet.reader.ExcelToMapConverter;
 
 /**
  * Creates the base for converting Excel Sheet into an HTML file
  * according to an HTML template
  * @author gaurav.edekar
  */
-public class ExcelToHtmlConverter implements SpreadsheetConverter {
+public class ExcelToHtmlFileConverter implements FileConverter {
 
 	private static final String PLACE_HOLDER_PREFIX = "k:";
 
@@ -29,7 +29,7 @@ public class ExcelToHtmlConverter implements SpreadsheetConverter {
 
 	private String destinationDirectory;
 
-	public ExcelToHtmlConverter(File pXLSSheet, String pDestinationDir) {
+	public ExcelToHtmlFileConverter(File pXLSSheet, String pDestinationDir) {
 		this.destinationDirectory = pDestinationDir;
 		this.excelSheet = pXLSSheet;
 	}
@@ -48,12 +48,10 @@ public class ExcelToHtmlConverter implements SpreadsheetConverter {
 	public void convert() throws IOException {
 
 		File spreadsheet = getSpreadsheet();
-		ExcelToJavaMapper excelDataMap = new ExcelToJavaMapper(spreadsheet);
-
-		if (excelDataMap.validate()) {
+		ExcelToMapConverter excelDataMap = new ExcelToMapConverter(spreadsheet);
 
 			Map<String, List<Map<String, String>>> fileTemplateMap = excelDataMap
-					.buildMapFromSpreadsheet(spreadsheet);
+					.convertExcelSheetToMap(spreadsheet);
 
 			if (fileTemplateMap != null && !fileTemplateMap.isEmpty()) {
 				String templateFile = "";
@@ -113,9 +111,6 @@ public class ExcelToHtmlConverter implements SpreadsheetConverter {
 					}
 				}
 			}
-		} else {
-			throw new RuntimeException("Not able to detect Excel Sheet.");
-		}
 	}
 
 	/**

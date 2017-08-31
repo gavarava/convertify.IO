@@ -5,6 +5,6 @@ import java.util.Map;
 
 public interface SpreadsheetToMapConverter {
 	
-	Map<String, ?> buildMapFromSpreadsheet(File spreadsheet);
+	Map<String, ?> convertExcelSheetToMap(File spreadsheet);
 
 }

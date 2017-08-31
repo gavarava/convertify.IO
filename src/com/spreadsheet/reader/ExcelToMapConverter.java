@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.converter.FileConverter;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -16,35 +17,32 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
-import com.sun.media.sound.InvalidFormatException;
-
-public class ExcelToJavaMapper implements SpreadsheetToMapConverter {
+public class ExcelToMapConverter implements SpreadsheetToMapConverter {
 
 	private static final int HEADER_ROW_INDEX = 0;
 
 	private File excelSheet;
 
-	public ExcelToJavaMapper(File excelSheet) {
-		this.excelSheet = excelSheet;
+	public ExcelToMapConverter(File excelSheet) {
+		if (isValid(excelSheet)) {
+			this.excelSheet = excelSheet;
+		} else {
+			throw new RuntimeException("Excel Sheet was invalid");
+		}
 	}
 
-	public boolean validate() {
-		return (this.excelSheet != null && this.excelSheet.exists() && !this.excelSheet
+	private boolean isValid(File excelSheet) {
+		return (excelSheet != null && excelSheet.exists() && !excelSheet
 				.isDirectory());
 	}
 
-	/**
-	 * Create a nested map with an entry for each File to be generated & its
-	 * information
-	 * Java 8 @Override behöver inte som vi har en Default Method nu
-	 */
-	public Map<String, List<Map<String, String>>> buildMapFromSpreadsheet(
-			File spreadsheet) {
+	public Map<String, List<Map<String, String>>> convertExcelSheetToMap(
+			File excelSheet) {
 
-		Map<String, List<Map<String, String>>> fileTemplateMap = new TreeMap<String, List<Map<String, String>>>();
-		if (validate()) {
+		if (isValid(excelSheet)) {
+			Map<String, List<Map<String, String>>> fileTemplateMap = new TreeMap<String, List<Map<String, String>>>();
 			try {
-				InputStream excelInpStream = new FileInputStream(spreadsheet);
+				InputStream excelInpStream = new FileInputStream(excelSheet);
 				Workbook workBook = new HSSFWorkbook(excelInpStream);
 				Sheet sheet = workBook.getSheetAt(0);
 				Row headRow = sheet.getRow(HEADER_ROW_INDEX);
@@ -54,7 +52,7 @@ public class ExcelToJavaMapper implements SpreadsheetToMapConverter {
 					Map<String, String> headerRowMap = new TreeMap<String, String>();
 					List<Map<String, String>> commonTemplateDataList = null;
 					if (dataRow != null && headRow != null) {
-						if (buildHeaderDataRowMap(headRow, dataRow,
+						if (processExcelSheetHeaders(headRow, dataRow,
 								headerRowMap)) {
 							String headerRowMapTemplateName = headerRowMap
 									.remove(cellAtIndex(headRow, 0));
@@ -95,12 +93,12 @@ public class ExcelToJavaMapper implements SpreadsheetToMapConverter {
 
 	/**
 	 * Fetches a Cell at certain index from a Row
-	 * 
+	 *
 	 * @param row
 	 * @param fileColumnIndex
 	 * @return cellString
 	 */
-	public static String cellAtIndex(Row row, int fileColumnIndex) {
+	private String cellAtIndex(Row row, int fileColumnIndex) {
 		String cellString = null;
 		if (row != null) {
 			Cell rowCell = row.getCell(fileColumnIndex);
@@ -111,16 +109,8 @@ public class ExcelToJavaMapper implements SpreadsheetToMapConverter {
 		return cellString;
 	}
 
-	/**
-	 * Build a Map of Header values as the Key & the Corresponding Columns in
-	 * subsequent rows as the value
-	 * 
-	 * @param headerRow
-	 * @param dataRow
-	 * @param headerRowMap
-	 */
-	public static boolean buildHeaderDataRowMap(Row headerRow, Row dataRow,
-			Map<String, String> headerRowMap) {
+	private boolean processExcelSheetHeaders(Row headerRow, Row dataRow,
+											 Map<String, String> headerRowMap) {
 
 		if (headerRow != null && dataRow != null) {
 			if (headerRow.getPhysicalNumberOfCells() < dataRow
@@ -141,11 +131,5 @@ public class ExcelToJavaMapper implements SpreadsheetToMapConverter {
 		}
 		return false;
 	}
-	
-	private static String replaceSpaces(String intialString) {
-		if (intialString.contains(" ")) {
-			intialString = intialString.replaceAll(" ", "&nbsp;");
-		}
-		return intialString;
-	}
+
 }

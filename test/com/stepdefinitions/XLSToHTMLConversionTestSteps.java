@@ -1,14 +1,12 @@
 package com.stepdefinitions;
 
-import com.converter.xlshtml.ExcelToHtmlConverter;
+import com.converter.xlshtml.ExcelToHtmlFileConverter;
 import cucumber.api.CucumberOptions;
-import cucumber.api.PendingException;
 import cucumber.api.java.After;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import junit.framework.TestFailure;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -16,7 +14,7 @@ import java.io.FileNotFoundException;
 @CucumberOptions(plugin = {"pretty", "html:target/CucumberTestReports"})
 public class XLSToHTMLConversionTestSteps {
 
-    private ExcelToHtmlConverter converter;
+    private ExcelToHtmlFileConverter converter;
     private File spreadSheet;
     private File destinationDirectory;
 
@@ -38,13 +36,13 @@ public class XLSToHTMLConversionTestSteps {
 
     @When("^: The ExcelToHtmlConverter is instantiated$")
     public void the_ExcelToHtmlConverter_is_instantiated() throws Throwable {
-        converter = new ExcelToHtmlConverter(spreadSheet, destinationDirectory.getAbsolutePath());
+        converter = new ExcelToHtmlFileConverter(spreadSheet, destinationDirectory.getAbsolutePath());
     }
 
     @Then("^: ExcelToHtmlConverter should be instantiated if parameters are valid")
     public void it_should_validate_that_the_Excel_Sheet_exists() throws Throwable {
         if (converter == null) {
-            throw new Exception("Could Not Instantiate ExcelToHtmlConverter");
+            throw new Exception("Could Not Instantiate ExcelToHtmlFileConverter");
         }
     }
 
@@ -58,7 +56,7 @@ public class XLSToHTMLConversionTestSteps {
         assert destinationDirectory.listFiles().length > 2;
     }
 
-    @After("@CleanupFilesAfrerRun")
+    @After("@CleanupFilesAfterRun")
     public void cleanup_generated_files() {
         cleanupFilesStartingWithNumber();
     }

@@ -2,7 +2,7 @@ package com.converter;
 
 import java.io.IOException;
 
-public interface SpreadsheetConverter {
+public interface FileConverter {
 	
 	void convert() throws IOException;
 }

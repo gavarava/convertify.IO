@@ -10,8 +10,8 @@ Feature: Convert Excel sheet data to HTML according to a Template
     When : The ExcelToHtmlConverter is instantiated
     Then : ExcelToHtmlConverter should be instantiated if parameters are valid
 
-  @CleanupFilesAfrerRun
-  Scenario: If run with all valid arguments, it should generate the HTML in the destination directory
+  @CleanupFilesAfterRun
+  Scenario: It should generate the HTML in the destination directory
     When : The ExcelToHtmlConverter is instantiated
     And : convert method is invoked
     Then : The expected HTML file is generated in the destination directory
