@@ -1,9 +1,9 @@
-package com.features;
+package com.convertify;
 
 import java.io.File;
 import java.io.IOException;
 
-import com.converter.xlshtml.ExcelToHtmlFileConverter;
+import com.convertify.converter.xlshtml.ExcelToHtmlFileConverter;
 public class HTMLGenerator
 {
     /**
@@ -16,7 +16,7 @@ public class HTMLGenerator
         // Template Path in the First Column (args[0])
         // args[1] is the destination
         // Default Names of Output File will be TemplateName_01.html and so on
-        // if the name of template is TemplateName
+        // if the name of templates is TemplateName
 
         File spreadsheet = new File(args[0]);
         ExcelToHtmlFileConverter converter = new ExcelToHtmlFileConverter(spreadsheet, args[1]);

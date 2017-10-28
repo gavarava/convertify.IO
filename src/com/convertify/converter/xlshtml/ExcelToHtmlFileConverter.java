@@ -1,4 +1,4 @@
-package com.converter.xlshtml;
+package com.convertify.converter.xlshtml;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,15 +8,15 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.converter.FileConverter;
+import com.convertify.converter.FileConverter;
 import org.apache.commons.io.FileUtils;
 
-import com.html.template.HTMLTemplate;
-import com.spreadsheet.reader.ExcelToMapConverter;
+import com.convertify.templates.HTMLTemplate;
+import com.convertify.reader.ExcelToMapConverter;
 
 /**
  * Creates the base for converting Excel Sheet into an HTML file
- * according to an HTML template
+ * according to an HTML templates
  * @author gaurav.edekar
  */
 public class ExcelToHtmlFileConverter implements FileConverter {
@@ -43,7 +43,7 @@ public class ExcelToHtmlFileConverter implements FileConverter {
 	}
 
 	/**
-	 * Convert an Excel Sheet to an HTML conforming to the template
+	 * Convert an Excel Sheet to an HTML conforming to the templates
 	 */
 	public void convert() throws IOException {
 

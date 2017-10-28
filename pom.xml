@@ -33,7 +33,7 @@
                     <configuration>
                         <archive>
                             <manifest>
-                                <mainClass>com.features.HTMLGenerator</mainClass>
+                                <mainClass>com.convertify.HTMLGenerator</mainClass>
                             </manifest>
                         </archive>
                         <descriptorRefs>

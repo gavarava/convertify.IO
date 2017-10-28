@@ -1,4 +1,4 @@
-package com.html.template;
+package com.convertify.templates;
 
 public interface Template {
 	

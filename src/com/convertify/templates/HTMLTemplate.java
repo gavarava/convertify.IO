@@ -1,4 +1,4 @@
-package com.html.template;
+package com.convertify.templates;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -30,7 +30,7 @@ public class HTMLTemplate implements Template {
 	}
 
 	/**
-	 * Returns the complete template File as a String
+	 * Returns the complete templates File as a String
 	 * @return
 	 */
 	@Override

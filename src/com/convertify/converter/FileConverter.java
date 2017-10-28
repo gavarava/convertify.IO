@@ -1,4 +1,4 @@
-package com.converter;
+package com.convertify.converter;
 
 import java.io.IOException;
 
