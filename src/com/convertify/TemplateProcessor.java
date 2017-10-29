@@ -4,11 +4,10 @@ import java.io.File;
 import java.io.IOException;
 
 import com.convertify.converter.xlshtml.ExcelToHtmlFileConverter;
-public class HTMLGenerator
+public class TemplateProcessor
 {
     /**
      * @author GaVaRaVa (https://www.linkedin.com/in/gaurav-edekar) First Argument = Path of the Excel Sheet Second
-     * Argument = Destination Directory of the FileConverter
      */
     public static void main(String[] args) {
 

@@ -1,6 +1,6 @@
 # convertify.IO
-A Simple Spreadsheet to HTML Converter that can be used to auto generate repeatable HTML pages using a given template.
-It converts XLS or XLSX files to an HTML template provided in a path.
+Template processor which can support creation of HTML pages with input from a Spreadsheet.
+It should be able to support multiple Spreadsheet types in the future, now it supports only Microsoft Excel Sheets.
 
 # Create Runnable jar with the following
 mvn clean compile assembly:single
@@ -22,3 +22,8 @@ Check Cucumber feature. Run using mvn test.
 
 # Example POM for SPOCK, another BDD
 https://github.com/spockframework/spock-example
+
+# Update October 2017
+On using the 5 whys technique, I discovered (within 2 whys) that this project is not a File Converter.
+It does not convert files from Excel to HTML. Because in that case my outpur should have been an HTML file with a HTML Table.
+This is a template processor.

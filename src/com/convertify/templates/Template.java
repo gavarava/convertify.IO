@@ -1,7 +1,6 @@
 package com.convertify.templates;
 
 public interface Template {
-	
-	boolean isValid();
-	
+	String getName();
+	String getPath();
 }

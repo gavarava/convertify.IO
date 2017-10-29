@@ -1,52 +1,55 @@
 package com.convertify.templates;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 
+import com.convertify.templates.exceptions.HTMLTemplateInvalidException;
 import com.google.common.io.CharStreams;
 
 public class HTMLTemplate implements Template {
 
 	private static String DEFAULT_ENCODING = "UTF-8";
 
-	private File htmlTemplate;
+	private File file;
 
-	public HTMLTemplate(File htmlTemplate) {
-		this.htmlTemplate = htmlTemplate;
+	public HTMLTemplate(File file) throws HTMLTemplateInvalidException {
+		this.file = file;
+		if (isNotValid()) {
+			throw new HTMLTemplateInvalidException();
+		}
 	}
 
-	public File getHTMLTemplate() {
-		return this.htmlTemplate;
+	public String name() {
+		return this.file.getName();
 	}
 
-	public String getName() { return this.htmlTemplate.getName(); }
-
-	public boolean isValid() {
-		return (this.htmlTemplate != null && this.htmlTemplate.exists() && !this.htmlTemplate
-				.isDirectory());
+	public boolean isNotValid() {
+		return !fileIsValid();
 	}
 
-	/**
-	 * Returns the complete templates File as a String
-	 * @return
-	 */
+	private boolean fileIsValid() {
+		return file != null && file.exists() && !file.isDirectory();
+	}
+
+	@Override
+	public String getName() {
+		return file.getName();
+	}
+
+	@Override
+	public String getPath() {
+		return file.getAbsolutePath();
+	}
+
 	@Override
 	public String toString() {
-		if (isValid()) {
-			try {
-				FileInputStream fis = new FileInputStream(getHTMLTemplate());
-				return CharStreams.toString(new InputStreamReader(fis,
-						DEFAULT_ENCODING));
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		try {
+			FileInputStream fis = new FileInputStream(file);
+			return CharStreams.toString(new InputStreamReader(fis, DEFAULT_ENCODING));
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		return null;
 	}
-
 }

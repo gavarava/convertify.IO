@@ -9,6 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.convertify.converter.FileConverter;
+import com.convertify.templates.exceptions.HTMLTemplateInvalidException;
 import org.apache.commons.io.FileUtils;
 
 import com.convertify.templates.HTMLTemplate;
@@ -17,6 +18,7 @@ import com.convertify.reader.ExcelToMapConverter;
 /**
  * Creates the base for converting Excel Sheet into an HTML file
  * according to an HTML templates
+ *
  * @author gaurav.edekar
  */
 public class ExcelToHtmlFileConverter implements FileConverter {
@@ -50,86 +52,71 @@ public class ExcelToHtmlFileConverter implements FileConverter {
 		File spreadsheet = getSpreadsheet();
 		ExcelToMapConverter excelDataMap = new ExcelToMapConverter(spreadsheet);
 
-			Map<String, List<Map<String, String>>> fileTemplateMap = excelDataMap
-					.convertExcelSheetToMap(spreadsheet);
+		Map<String, List<Map<String, String>>> fileTemplateMap = excelDataMap.convertExcelSheetToMap(spreadsheet);
 
-			if (fileTemplateMap != null && !fileTemplateMap.isEmpty()) {
-				String templateFile = "";
-				for (Entry<String, List<Map<String, String>>> dataMapEntry : fileTemplateMap
-						.entrySet()) {
-					templateFile = dataMapEntry.getKey();             
+		if (fileTemplateMap != null && !fileTemplateMap.isEmpty()) {
+			String templateFile = "";
+			for (Entry<String, List<Map<String, String>>> dataMapEntry : fileTemplateMap.entrySet()) {
+				templateFile = dataMapEntry.getKey();
 
-					HTMLTemplate htmlTemplate = new HTMLTemplate(new File(
-							spreadsheet.getParent()+"\\"+templateFile+"\\"));
+				HTMLTemplate htmlTemplate = null;
+				try {
+					htmlTemplate = new HTMLTemplate(
+							new File(spreadsheet.getParent() + "\\" + templateFile + "\\"));
+				} catch (HTMLTemplateInvalidException e) {
+					e.printStackTrace();
+				}
 
-					if (htmlTemplate.isValid()) {
+					// Convert the HTML Template into a String Format
+					String htmlTemplateString = htmlTemplate.toString();
 
-						// Convert the HTML Template into a String Format
-						String htmlTemplateString = htmlTemplate.toString();
+					if (!isBlank(htmlTemplateString)) {
+						// Get the Placeholder-Data Map from the Template
+						// Map generated from Excel Sheet
+						List<Map<String, String>> htmlDataMapList = fileTemplateMap.get(templateFile);
 
-						if (!isBlank(htmlTemplateString)) {
-							// Get the Placeholder-Data Map from the Template
-							// Map generated from Excel Sheet
-							List<Map<String, String>> htmlDataMapList = fileTemplateMap
-									.get(templateFile);
+						int rowCount = 1;
+						for (Map<String, String> htmlDataMap : htmlDataMapList) {
+							if (htmlDataMap != null && htmlDataMap.size() > 0) {
+								String convertedTemplate = imposeDataOnTemplate(htmlDataMap, htmlTemplateString);
 
-							int rowCount = 1;
-							for (Map<String, String> htmlDataMap : htmlDataMapList) {
-								if (htmlDataMap != null
-										&& htmlDataMap.size() > 0) {
-									String convertedTemplate = imposeDataOnTemplate(
-											htmlDataMap, htmlTemplateString);
-
-									try {
-										FileUtils
-												.writeStringToFile(
-														new File(
-																getDestinationDirectory()+"\\"+
-																		+ rowCount
-																		+ "_"
-																		+ htmlTemplate
-																				.getName()),
-																		convertedTemplate);
-									} catch (IOException e) {
-										e.printStackTrace();
-									}
-								} else {
-									throw new RuntimeException("ERROR fetching data from Excel Sheet.");
+								try {
+									FileUtils.writeStringToFile(new File(
+											getDestinationDirectory() + "\\" + +rowCount + "_" + htmlTemplate
+													.name()), convertedTemplate);
+								} catch (IOException e) {
+									e.printStackTrace();
 								}
-								rowCount++;
+							} else {
+								throw new RuntimeException("ERROR fetching data from Excel Sheet.");
 							}
-							System.out.println(rowCount-1 + " row/s for " +templateFile+ " have been processed successfully !!");
-
-						} else {
-							throw new RuntimeException("HTML Template <" + templateFile
-									+ "> is blank.");
+							rowCount++;
 						}
+						System.out.println(
+								rowCount - 1 + " row/s for " + templateFile + " have been processed successfully !!");
 
 					} else {
-						throw new RuntimeException("HTML Template <" + templateFile
-								+ "> is invalid OR it does not exist.");
+						throw new RuntimeException("HTML Template <" + templateFile + "> is blank.");
 					}
-				}
 			}
+		}
 	}
 
 	/**
 	 * Fill HTML Template with Data in the pDataMap
-	 * 
+	 *
 	 * @param pDataMap
 	 * @param pTemplateString
 	 */
-	private String imposeDataOnTemplate(Map<String, String> pDataMap,
-			String pTemplateString) {
+	private String imposeDataOnTemplate(Map<String, String> pDataMap, String pTemplateString) {
 
 		for (Entry<String, String> dataEntry : pDataMap.entrySet()) {
 			StringBuffer plcHolderBuffer = new StringBuffer();
-			plcHolderBuffer = plcHolderBuffer.append(PLACE_HOLDER_PREFIX)
-					.append(dataEntry.getKey()).append(PLACE_HOLDER_SUFFIX);
+			plcHolderBuffer = plcHolderBuffer.append(PLACE_HOLDER_PREFIX).append(dataEntry.getKey())
+					.append(PLACE_HOLDER_SUFFIX);
 			String placeHolder = plcHolderBuffer.toString();
-			pTemplateString = pTemplateString.replaceAll(
-					Pattern.quote(placeHolder),
-					Matcher.quoteReplacement(dataEntry.getValue()));
+			pTemplateString = pTemplateString
+					.replaceAll(Pattern.quote(placeHolder), Matcher.quoteReplacement(dataEntry.getValue()));
 		}
 
 		return pTemplateString;
@@ -137,8 +124,7 @@ public class ExcelToHtmlFileConverter implements FileConverter {
 	}
 
 	public boolean isBlank(String pCheckString) {
-		return (pCheckString == null || "".equalsIgnoreCase(pCheckString) || pCheckString
-				.trim().length() == 0);
+		return (pCheckString == null || "".equalsIgnoreCase(pCheckString) || pCheckString.trim().length() == 0);
 	}
 
 }

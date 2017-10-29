@@ -4,14 +4,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <!-- POM - Project Object Model is the XML which contains Project Information & Configuration -->
     <modelVersion>4.0.0</modelVersion>
-    <groupId>XLSToHTMLConverter</groupId>
-    <artifactId>XLSToHTMLConverter</artifactId>
+    <groupId>ConvertifyTemplateEngine</groupId>
+    <artifactId>ConvertifyTemplateEngine</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <description>A Simple Template Engine which can generate text output based on a template and data</description>
 
     <properties>
         <junit.version>4.11</junit.version>
         <cucumber.version>1.2.2</cucumber.version>
         <maven.compiler.version>2.3.2</maven.compiler.version>
+        <apache.camel.version>2.15.0</apache.camel.version>
     </properties>
 
     <build>
@@ -33,7 +35,7 @@
                     <configuration>
                         <archive>
                             <manifest>
-                                <mainClass>com.convertify.HTMLGenerator</mainClass>
+                                <mainClass>com.convertify.TemplateProcessor</mainClass>
                             </manifest>
                         </archive>
                         <descriptorRefs>
@@ -43,34 +45,49 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 
     <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
     <dependencies>
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi</artifactId>
-			<version>3.16</version>
-		</dependency>	
-		<dependency>
-			<groupId>org.apache.xmlbeans</groupId>
-			<artifactId>xmlbeans</artifactId>
-			<version>2.6.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>23.0</version>
-		</dependency>		
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>2.5</version>
-		</dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.16</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.xmlbeans</groupId>
+            <artifactId>xmlbeans</artifactId>
+            <version>2.6.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>23.0</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-csv</artifactId>
+            <version>${apache.camel.version}</version>
+        </dependency>
         <!-- Cucumber-java-->
         <dependency>
             <groupId>info.cukes</groupId>
-            <artifactId>cucumber-java</artifactId>
+            <artifactId>cucumber-java8</artifactId>
             <version>${cucumber.version}</version>
             <scope>test</scope>
         </dependency>
