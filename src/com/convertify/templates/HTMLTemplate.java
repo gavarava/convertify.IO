@@ -22,7 +22,7 @@ public class HTMLTemplate implements Template {
 		return this.file.getName();
 	}
 
-	public boolean isNotValid() {
+	private boolean isNotValid() {
 		return !fileIsValid();
 	}
 
@@ -30,23 +30,18 @@ public class HTMLTemplate implements Template {
 		return file != null && file.exists() && !file.isDirectory();
 	}
 
-	@Override
-	public String getName() {
+	@Override public String getName() {
 		return file.getName();
 	}
 
-	@Override
-	public String getPath() {
+	@Override public String getPath() {
 		return file.getAbsolutePath();
 	}
 
-	@Override
-	public String toString() {
+	@Override public String toString() {
 		try {
 			FileInputStream fis = new FileInputStream(file);
 			return CharStreams.toString(new InputStreamReader(fis, DEFAULT_ENCODING));
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
