@@ -1,8 +1,8 @@
-package com.convertify.templates;
+package com.convertify.template;
 
 import java.io.*;
 
-import com.convertify.templates.exceptions.HTMLTemplateInvalidException;
+import com.convertify.template.exceptions.HTMLTemplateInvalidException;
 import com.google.common.io.CharStreams;
 
 public class HTMLTemplate implements Template {

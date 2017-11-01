@@ -1,4 +1,4 @@
-package com.convertify.templates.exceptions;
+package com.convertify.template.exceptions;
 
 public class TemplateException extends Exception {
 

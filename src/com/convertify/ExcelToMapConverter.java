@@ -1,4 +1,4 @@
-package com.convertify.reader;
+package com.convertify;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,7 +16,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
-public class ExcelToMapConverter implements SpreadsheetToMapConverter {
+public class ExcelToMapConverter {
 
 	private static final int HEADER_ROW_INDEX = 0;
 
@@ -35,7 +35,7 @@ public class ExcelToMapConverter implements SpreadsheetToMapConverter {
 				.isDirectory());
 	}
 
-	public Map<String, List<Map<String, String>>> convertExcelSheetToMap(
+	public Map<String, List<Map<String, String>>> read(
 			File excelSheet) {
 
 		if (isValid(excelSheet)) {

@@ -9,15 +9,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.convertify.converter.FileConverter;
-import com.convertify.templates.exceptions.HTMLTemplateInvalidException;
+import com.convertify.template.exceptions.HTMLTemplateInvalidException;
 import org.apache.commons.io.FileUtils;
 
-import com.convertify.templates.HTMLTemplate;
-import com.convertify.reader.ExcelToMapConverter;
+import com.convertify.template.HTMLTemplate;
+import com.convertify.ExcelToMapConverter;
 
 /**
  * Creates the base for converting Excel Sheet into an HTML file
- * according to an HTML templates
+ * according to an HTML template
  *
  * @author gaurav.edekar
  */
@@ -45,14 +45,14 @@ public class ExcelToHtmlFileConverter implements FileConverter {
 	}
 
 	/**
-	 * Convert an Excel Sheet to an HTML conforming to the templates
+	 * Convert an Excel Sheet to an HTML conforming to the template
 	 */
 	public void convert() throws IOException {
 
 		File spreadsheet = getSpreadsheet();
 		ExcelToMapConverter excelDataMap = new ExcelToMapConverter(spreadsheet);
 
-		Map<String, List<Map<String, String>>> fileTemplateMap = excelDataMap.convertExcelSheetToMap(spreadsheet);
+		Map<String, List<Map<String, String>>> fileTemplateMap = excelDataMap.read(spreadsheet);
 
 		if (fileTemplateMap != null && !fileTemplateMap.isEmpty()) {
 			String templateFile = "";

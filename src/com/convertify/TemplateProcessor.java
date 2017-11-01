@@ -15,7 +15,7 @@ public class TemplateProcessor
         // Template Path in the First Column (args[0])
         // args[1] is the destination
         // Default Names of Output File will be TemplateName_01.html and so on
-        // if the name of templates is TemplateName
+        // if the name of template is TemplateName
 
         File spreadsheet = new File(args[0]);
         ExcelToHtmlFileConverter converter = new ExcelToHtmlFileConverter(spreadsheet, args[1]);
