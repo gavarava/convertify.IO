@@ -1,10 +1,18 @@
 package com.convertify.data;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
-public class MSExcelDataSet<SpreadSheetDatarow> implements Dataset<SpreadSheetDatarow> {
+public class MSExcelDataSet<SpreadSheetRow> implements Dataset {
 
-	@Override public Map<String, SpreadSheetDatarow> unmarshalledData() {
-		return null;
+	private List<SpreadSheetRow> rows = new ArrayList<>();
+	private boolean empty = rows.isEmpty();
+
+	@Override public List<SpreadSheetRow> getResultSet() {
+		return rows;
+	}
+
+	@Override public boolean empty() {
+		return empty;
 	}
 }

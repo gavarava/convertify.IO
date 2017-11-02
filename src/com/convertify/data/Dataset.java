@@ -1,9 +1,12 @@
 package com.convertify.data;
 
+import java.util.Collection;
 import java.util.Map;
 
-public interface Dataset<DataRow> {
+public interface Dataset {
 
-	Map<String, ? extends DataRow> unmarshalledData();
+	Collection<?> getResultSet();
+
+	boolean empty();
 
 }
