@@ -15,4 +15,8 @@ public class MSExcelDataSet<SpreadSheetRow> implements Dataset {
 	@Override public boolean empty() {
 		return empty;
 	}
+
+	public int getRowCount() {
+		return rows.size();
+	}
 }

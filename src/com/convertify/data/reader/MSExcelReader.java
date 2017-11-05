@@ -5,6 +5,9 @@ import com.convertify.data.SpreadSheetRow;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 
 import java.io.*;
 
@@ -27,10 +30,13 @@ public class MSExcelReader implements DatasetReader {
 
 	@Override public MSExcelDataSet<SpreadSheetRow> read() {
 		MSExcelDataSet<SpreadSheetRow> resultset = new MSExcelDataSet<>();
+		for (SpreadSheetRow spreadSheetRow : resultset.getResultSet()) {
+
+		}
 		try {
-			HSSFSheet activeSheet = createHSSFSheetFromFirstActiveWorkSheet();
+			Sheet activeSheet = createHSSFSheetFromFirstActiveWorkSheet();
 			if (hasRows(activeSheet)) {
-				HSSFRow headerRow = activeSheet.getRow(HEADER_ROW);
+				Row headerRow = activeSheet.getRow(HEADER_ROW);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -38,13 +44,13 @@ public class MSExcelReader implements DatasetReader {
 		return resultset;
 	}
 
-	private HSSFSheet createHSSFSheetFromFirstActiveWorkSheet() throws IOException {
+	private Sheet createHSSFSheetFromFirstActiveWorkSheet() throws IOException {
 		InputStream inputStream = new FileInputStream(source);
-		HSSFWorkbook workbook = new HSSFWorkbook((inputStream));
+		Workbook workbook = new HSSFWorkbook((inputStream));
 		return workbook.getSheetAt(workbook.getActiveSheetIndex());
 	}
 
-	private boolean hasRows(HSSFSheet sheet) {
+	private boolean hasRows(Sheet sheet) {
 		return sheet.getPhysicalNumberOfRows() >= 1;
 	}
 }

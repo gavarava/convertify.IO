@@ -3,6 +3,7 @@ package com.convertify.data.reader;
 import com.convertify.data.MSExcelDataSet;
 import com.convertify.data.SpreadSheetRow;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -33,12 +34,14 @@ public class MSExcelReaderTest {
 		msExcelReader = new MSExcelReader(file);
 	}
 
-	@Test public void shouldGetARowWhenExcelSheetContainsTheFirstRow() throws Exception {
+	@Test public void shouldGetATheHeaderRowWhenExcelSheetContainsTheFirstRow() throws Exception {
 		MSExcelDataSet<SpreadSheetRow> result = msExcelReader.read();
 
 	}
 
-	@Test public void shouldReturnDataSetWhenItReturnsAValidDataSet() throws Exception {
+	@Test
+	@Ignore(value = "TODO Implementation")
+	public void shouldReturnDataSetWhenItReturnsAValidDataSet() throws Exception {
 		MSExcelDataSet<SpreadSheetRow> result = msExcelReader.read();
 		assertNotNull("Excel Sheet was read as null data set", result);
 		assertFalse(result.getResultSet().isEmpty());
