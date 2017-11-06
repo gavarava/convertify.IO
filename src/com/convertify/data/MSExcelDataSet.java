@@ -3,12 +3,12 @@ package com.convertify.data;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MSExcelDataSet<SpreadSheetRow> implements Dataset {
+public class MSExcelDataSet<DataRow> implements Dataset {
 
-	private List<SpreadSheetRow> rows = new ArrayList<>();
+	private List<DataRow> rows = new ArrayList<>();
 	private boolean empty = rows.isEmpty();
 
-	@Override public List<SpreadSheetRow> getResultSet() {
+	@Override public List<DataRow> resultSet() {
 		return rows;
 	}
 
@@ -18,5 +18,9 @@ public class MSExcelDataSet<SpreadSheetRow> implements Dataset {
 
 	public int getRowCount() {
 		return rows.size();
+	}
+
+	public void add(DataRow row) {
+		rows.add(row);
 	}
 }

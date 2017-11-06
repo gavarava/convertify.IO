@@ -5,7 +5,7 @@ import java.util.Map;
 
 public interface Dataset {
 
-	Collection<?> getResultSet();
+	Collection<?> resultSet();
 
 	boolean empty();
 
