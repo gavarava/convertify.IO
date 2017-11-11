@@ -22,12 +22,14 @@ public class MSExcelDataSetTest {
 		assertTrue(msExcelDataSet.getRowCount() == 0);
 	}
 
-	@Test public void shouldReturnCorrectCountOfRowsInTheDatasetWhenContainsData() {
+	@Test public void shouldReturnCorrectCountOfRowsInTheDatasetWhenContainsData()
+			throws InvalidSpreadsheetCellException {
 		msExcelDataSet.add(new DataRow(quickSetupDataCells()));
 		assertTrue(msExcelDataSet.getRowCount() > 0);
 	}
 
-	@Test public void thatListOfSpreadsheetRowsIsNotEmptyWhenSheetContainsData() throws Exception {
+	@Test public void thatListOfSpreadsheetRowsIsNotEmptyWhenSheetContainsData()
+			throws Exception, InvalidSpreadsheetCellException {
 		// Given a Dataset with spreadsheetrows
 		List<DataCell> cellList1 = quickSetupDataCells();
 		List<DataCell> cellList2 =
@@ -47,7 +49,7 @@ public class MSExcelDataSetTest {
 		assertThat(msExcelDataSet.empty(), is(true));
 	}
 
-	private List<DataCell> quickSetupDataCells() {
+	private List<DataCell> quickSetupDataCells() throws InvalidSpreadsheetCellException {
 		return createListOfCells().
 				with(new DataCell("HeaderX", "ValueX")).
 				with(new DataCell("HeaderN", "ValueM")).

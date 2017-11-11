@@ -2,6 +2,7 @@ package com.convertify.data.reader;
 
 import com.convertify.data.DataCell;
 import com.convertify.data.DataRow;
+import com.convertify.data.InvalidSpreadsheetCellException;
 import com.convertify.data.MSExcelDataSet;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.ss.usermodel.Cell;
@@ -46,7 +47,7 @@ public class MSExcelReaderTest {
 	@Test
 	public void shouldGetTheFirstActiveSheetFromExcelFile() throws IOException {
 		setupExcelFileForTest();
-		fixSheetForTest(2);
+		fixMockedSheetForTest(2);
 		msExcelReader.read();
 		Mockito.verify(msExcelReader, times(1)).getFirstActiveSheetExcelFile();
 	}
@@ -54,7 +55,7 @@ public class MSExcelReaderTest {
 	@Test
 	public void shouldSetupExcelSheetHeaderWhenFileHasMoreThanOneRow() throws IOException {
 		setupExcelFileForTest();
-		fixSheetForTest(2);
+		fixMockedSheetForTest(2);
 		msExcelReader.read();
 		Mockito.verify(msExcelReader, times(1)).setExcelWorkSheet(any(HSSFSheet.class));
 	}
@@ -62,14 +63,15 @@ public class MSExcelReaderTest {
 	@Test( expected = UnsupportedOperationException.class )
 	public void thatThrowsUnsupportedOperationExceptionWhenYouHaveOnlyOneRow() throws IOException {
 		setupExcelFileForTest();
-		fixSheetForTest(1);
+		fixMockedSheetForTest(1);
 		msExcelReader.read();
 	}
 
 	@Test
-	public void shouldCreateADataCellFromOneExcelSheetCellAndHeader() throws IOException {
+	public void shouldCreateADataCellFromOneExcelSheetCellAndHeader()
+			throws IOException, InvalidSpreadsheetCellException {
 		setupExcelFileForTest();
-		fixSheetForTest(2);
+		fixMockedSheetForTest(2);
 		String header = "TestHeader";
 		Cell dummyCell = mock(Cell.class);
 		when(dummyCell.getStringCellValue()).thenReturn("TestData");
@@ -80,9 +82,10 @@ public class MSExcelReaderTest {
 	}
 
 	@Test
-	public void shouldCreateADatarowWhenAHeaderAndARowIsPresentInExcelSheet() {
-		Row headerRow = mock(Row.class);
-		Row excelDataRow = mock(Row.class);
+	public void shouldCreateADatarowWhenAHeaderAndARowIsPresentInExcelSheet() throws FileNotFoundException {
+		Row headerRow = createMockSingleHSSFRowWithSingle("TestHeader");
+		Row excelDataRow = createMockSingleHSSFRowWithSingle("TestStringValue");
+		msExcelReader = new MSExcelReader(file);
 		DataRow dataRow = msExcelReader.createDataRowFromHeaderRowAndExcelRow(headerRow, excelDataRow);
 		assertNotNull(dataRow);
 		assertFalse(dataRow.empty());
@@ -90,14 +93,27 @@ public class MSExcelReaderTest {
 	}
 
 	@Test
-	public void shouldCollectDatarowsInfoDatasetWhenHeaderAndDatarowAvailable() throws Exception {
-		// Given a DataRow
-		// Get a Test Data Row
-		//When
+	public void shouldCollectDataRowsInfoDatasetWhenHeaderAndDatarowAvailable() throws Exception {
+		msExcelReader = new MSExcelReader(file);
+		msExcelReader.collectMetaData();
 		MSExcelDataSet<DataRow> result = msExcelReader.collectDatarowsIntoDataSet();
-		// Then
 		assertNotNull("Excel Sheet was read as null data set", result);
 		assertFalse(result.resultSet().isEmpty());
+	}
+
+	private Row createMockSingleHSSFRowWithSingle(String stringCellValue) {
+		Row row = mock(Row.class);
+		when(row.getPhysicalNumberOfCells()).thenReturn(1);
+		Cell mockCellWithValue = getMockCellWithValue(stringCellValue);
+		when(row.getCell(0)).thenReturn(mockCellWithValue);
+		return row;
+	}
+
+	private Cell getMockCellWithValue(String stringCellValue) {
+		Cell cell = mock(Cell.class);
+		when(cell.getStringCellValue()).thenReturn(stringCellValue);
+		when(cell.getColumnIndex()).thenReturn(0);
+		return cell;
 	}
 
 	private void setupTestExcelSheet() {
@@ -105,9 +121,10 @@ public class MSExcelReaderTest {
 		file = new File(resource.getPath());
 	}
 
-	private void fixSheetForTest(int noOfRows) throws IOException {
+	private void fixMockedSheetForTest(int noOfRows) throws IOException {
 		doReturn(sheet).when(msExcelReader).getFirstActiveSheetExcelFile();
 		when(sheet.getPhysicalNumberOfRows()).thenReturn(noOfRows);
+		doReturn(new MSExcelDataSet<>()).when(msExcelReader).collectDatarowsIntoDataSet();
 	}
 
 	private void setupExcelFileForTest() {

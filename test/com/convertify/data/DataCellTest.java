@@ -12,22 +12,24 @@ public class DataCellTest {
 		assertTrue(dataCell.empty());
 	}
 
-	@Test public void thatEmptyEvaluatesToFalseWhenThereIsADataValueAndHeader() throws Exception {
+	@Test public void thatEmptyEvaluatesToFalseWhenThereIsADataValueAndHeader()
+			throws Exception, InvalidSpreadsheetCellException {
 		createDataCellForTest("Header", "Value");
 		assertFalse(dataCell.empty());
 	}
 
-	@Test public void thatColumnDataTypeHeaderCanExistWithBlankData() {
+	@Test public void thatColumnDataTypeHeaderCanExistWithBlankData() throws InvalidSpreadsheetCellException {
 		createDataCellForTest("Header", "");
 		assertTrue("Header".equalsIgnoreCase(dataCell.getDataTypeHeader()));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void thatDataCannotExistWithoutColumnDataTypeHeaderInformation() {
+	@Test(expected = InvalidSpreadsheetCellException.class)
+	public void thatDataCannotExistWithoutColumnDataTypeHeaderInformation() throws InvalidSpreadsheetCellException {
 		createDataCellForTest("", "Value");
 	}
 
-	private void createDataCellForTest(String columnDataTypeHeader, String value) {
+	private void createDataCellForTest(String columnDataTypeHeader, String value)
+			throws InvalidSpreadsheetCellException {
 		dataCell = new DataCell(columnDataTypeHeader, value);
 	}
 
