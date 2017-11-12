@@ -30,7 +30,7 @@ public class MSExcelDataSetTest {
 
 	@Test public void thatListOfSpreadsheetRowsIsNotEmptyWhenSheetContainsData()
 			throws Exception, InvalidSpreadsheetCell {
-		// Given a Dataset with spreadsheetrows
+		// Given a DataSet with spreadsheetrows
 		List<DataCell> cellList1 = quickSetupDataCells();
 		List<DataCell> cellList2 =
 				createListOfCells().

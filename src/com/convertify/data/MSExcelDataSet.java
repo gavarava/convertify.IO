@@ -3,12 +3,12 @@ package com.convertify.data;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MSExcelDataSet<T> implements Dataset {
+public class MSExcelDataSet implements DataSet {
 
-	private List<T> rows = new ArrayList<>();
-	private boolean empty = rows.isEmpty();
+	private List<com.convertify.data.DataRow> rows  = new ArrayList<>();
+	private boolean                           empty = rows.isEmpty();
 
-	@Override public List<T> resultSet() {
+	@Override public List<DataRow> resultSet() {
 		return rows;
 	}
 
@@ -20,7 +20,7 @@ public class MSExcelDataSet<T> implements Dataset {
 		return rows.size();
 	}
 
-	public void add(T row) {
+	public void add(DataRow row) {
 		rows.add(row);
 	}
 }

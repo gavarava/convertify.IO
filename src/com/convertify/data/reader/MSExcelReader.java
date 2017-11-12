@@ -48,7 +48,7 @@ public class MSExcelReader implements DatasetReader {
 	void collectMetaData() throws IOException {
 		readExcelWorksheet();
 		if (!worksheetHasData()) {
-			throw new UnsupportedOperationException("Cannot initialize Dataset without any data");
+			throw new UnsupportedOperationException("Cannot initialize DataSet without any data");
 		}
 		Row header = excelWorkSheet.getRow(HEADER_ROW_INDEX);
 		setExcelHeader(header);

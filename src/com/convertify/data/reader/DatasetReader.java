@@ -1,11 +1,11 @@
 package com.convertify.data.reader;
 
-import com.convertify.data.Dataset;
+import com.convertify.data.DataSet;
 
 import java.io.IOException;
 
 public interface DatasetReader {
 
-	Dataset read() throws IOException;
+	DataSet read() throws IOException;
 
 }
