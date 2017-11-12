@@ -96,7 +96,7 @@ public class MSExcelReaderTest {
 	public void shouldCollectDataRowsInfoDatasetWhenHeaderAndDatarowAvailable() throws Exception {
 		msExcelReader = new MSExcelReader(file);
 		msExcelReader.collectMetaData();
-		MSExcelDataSet<DataRow> result = msExcelReader.collectDatarowsIntoDataSet();
+		MSExcelDataSet result = msExcelReader.collectDatarowsIntoDataSet();
 		assertNotNull("Excel Sheet was read as null data set", result);
 		assertFalse(result.resultSet().isEmpty());
 	}
@@ -124,7 +124,7 @@ public class MSExcelReaderTest {
 	private void fixMockedSheetForTest(int noOfRows) throws IOException {
 		doReturn(sheet).when(msExcelReader).getFirstActiveSheetExcelFile();
 		when(sheet.getPhysicalNumberOfRows()).thenReturn(noOfRows);
-		doReturn(new MSExcelDataSet<>()).when(msExcelReader).collectDatarowsIntoDataSet();
+		doReturn(new MSExcelDataSet()).when(msExcelReader).collectDatarowsIntoDataSet();
 	}
 
 	private void setupExcelFileForTest() {

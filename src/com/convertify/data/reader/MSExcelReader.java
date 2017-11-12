@@ -40,7 +40,7 @@ public class MSExcelReader implements DatasetReader {
 	}
 
 	@Override
-	public MSExcelDataSet<DataRow> read() throws IOException {
+	public MSExcelDataSet read() throws IOException {
 		collectMetaData();
 		return collectDatarowsIntoDataSet();
 	}
@@ -63,8 +63,8 @@ public class MSExcelReader implements DatasetReader {
 		return excelWorkSheet.getPhysicalNumberOfRows() >= EXCEL_SHEET_ROWCOUNT_INCLUDING_HEADER;
 	}
 
-	MSExcelDataSet<DataRow> collectDatarowsIntoDataSet() {
-		MSExcelDataSet<DataRow> dataSet = new MSExcelDataSet<>();
+	MSExcelDataSet collectDatarowsIntoDataSet() {
+		MSExcelDataSet dataSet = new MSExcelDataSet();
 		int totalRowsInExcelSheet = excelWorkSheet.getPhysicalNumberOfRows();
 		for (int rowIndex = ROW_AFTER_HEADER; rowIndex < totalRowsInExcelSheet; rowIndex++) {
 			Row rowFromExcelSheetAtIndex = excelWorkSheet.getRow(rowIndex);
@@ -97,7 +97,7 @@ public class MSExcelReader implements DatasetReader {
 
 	DataRow createDataRowFromHeaderRowAndExcelRow(Row headerRow, Row dataRow) {
 		List<DataCell> cellsForDataRow = new ArrayList<>();
-		int numberOfCells = headerRow.getLastCellNum();
+		int numberOfCells = headerRow.getPhysicalNumberOfCells();
 		for (int cellIndex = 0; cellIndex < numberOfCells; cellIndex++) {
 			try {
 				DataCell cellAtIndex = createDataCellFromHSSFRows(headerRow, dataRow, cellIndex);
