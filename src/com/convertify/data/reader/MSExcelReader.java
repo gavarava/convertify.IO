@@ -1,10 +1,9 @@
 package com.convertify.data.reader;
 
 import com.convertify.data.DataCell;
-import com.convertify.data.InvalidSpreadsheetCellException;
+import com.convertify.data.InvalidSpreadsheetCell;
 import com.convertify.data.MSExcelDataSet;
 import com.convertify.data.DataRow;
-import com.sun.org.apache.xpath.internal.SourceTree;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -51,8 +50,8 @@ public class MSExcelReader implements DatasetReader {
 		if (!worksheetHasData()) {
 			throw new UnsupportedOperationException("Cannot initialize Dataset without any data");
 		}
-		Row excelHeader = excelWorkSheet.getRow(HEADER_ROW_INDEX);
-		setExcelHeader(excelHeader);
+		Row header = excelWorkSheet.getRow(HEADER_ROW_INDEX);
+		setExcelHeader(header);
 	}
 
 	private void readExcelWorksheet() throws IOException {
@@ -75,9 +74,12 @@ public class MSExcelReader implements DatasetReader {
 	}
 
 	Sheet getFirstActiveSheetExcelFile() throws IOException {
-		InputStream inputStream = new FileInputStream(source);
-		Workbook workbook = new HSSFWorkbook((inputStream));
-		int workbookActiveSheetIndex = workbook.getActiveSheetIndex();
+		Workbook workbook;
+		int workbookActiveSheetIndex;
+		try (InputStream inputStream = new FileInputStream(source)) {
+			workbook = new HSSFWorkbook((inputStream));
+			workbookActiveSheetIndex = workbook.getActiveSheetIndex();
+		}
 		return workbook.getSheetAt(workbookActiveSheetIndex);
 	}
 
@@ -93,30 +95,29 @@ public class MSExcelReader implements DatasetReader {
 		this.source = source;
 	}
 
-	public DataRow createDataRowFromHeaderRowAndExcelRow(Row headerRow, Row dataRow) {
+	DataRow createDataRowFromHeaderRowAndExcelRow(Row headerRow, Row dataRow) {
 		List<DataCell> cellsForDataRow = new ArrayList<>();
-		int numberOfCells = headerRow.getPhysicalNumberOfCells();
+		int numberOfCells = headerRow.getLastCellNum();
 		for (int cellIndex = 0; cellIndex < numberOfCells; cellIndex++) {
-			DataCell cellAtIndex = null;
 			try {
-				cellAtIndex = createDataCellFromHSSFRows(headerRow, dataRow, cellIndex);
+				DataCell cellAtIndex = createDataCellFromHSSFRows(headerRow, dataRow, cellIndex);
 				cellsForDataRow.add(cellAtIndex);
-			} catch (InvalidSpreadsheetCellException e) {
-				System.err.println("Skipping cell " + cellAtIndex + " at row " + dataRow.getRowNum());
+			} catch (InvalidSpreadsheetCell e) {
+				System.err.println("Skipping cell " + cellIndex + " at row " + dataRow.getRowNum());
 			}
 		}
 		return new DataRow(cellsForDataRow);
 	}
 
 	private DataCell createDataCellFromHSSFRows(Row headerRow, Row dataRow, int cellIndex)
-			throws InvalidSpreadsheetCellException {
+			throws InvalidSpreadsheetCell {
 		Cell dataTypeFromHeader = headerRow.getCell(cellIndex);
 		Cell dataRowCell = dataRow.getCell(cellIndex);
 		return createDataCellFromCellHeaderAndCellValue(dataTypeFromHeader.getStringCellValue(), dataRowCell);
 	}
 
-	public DataCell createDataCellFromCellHeaderAndCellValue(String cellHeader, Cell cell)
-			throws InvalidSpreadsheetCellException {
+	DataCell createDataCellFromCellHeaderAndCellValue(String cellHeader, Cell cell)
+			throws InvalidSpreadsheetCell {
 		return new DataCell(cellHeader, cell.getStringCellValue());
 	}
 }

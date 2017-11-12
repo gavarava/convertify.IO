@@ -39,9 +39,8 @@ public class HTMLTemplate implements Template {
 	}
 
 	@Override public String toString() {
-		try {
-			FileInputStream fis = new FileInputStream(file);
-			return CharStreams.toString(new InputStreamReader(fis, DEFAULT_ENCODING));
+		try (FileInputStream fis = new FileInputStream(file)) {
+				return CharStreams.toString(new InputStreamReader(fis, DEFAULT_ENCODING));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

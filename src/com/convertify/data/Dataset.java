@@ -1,11 +1,10 @@
 package com.convertify.data;
 
 import java.util.Collection;
-import java.util.Map;
 
 public interface Dataset {
 
-	Collection<?> resultSet();
+	Collection<Object> resultSet();
 
 	boolean empty();
 

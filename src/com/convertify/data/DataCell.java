@@ -8,9 +8,9 @@ public class DataCell {
 	private String dataTypeHeader;
 	private String data;
 
-	public DataCell(String dataTypeHeader, String data) throws InvalidSpreadsheetCellException {
+	public DataCell(String dataTypeHeader, String data) throws InvalidSpreadsheetCell {
 		if (dataTypeHeader == null || dataTypeHeader.isEmpty()) {
-			throw new InvalidSpreadsheetCellException();
+			throw new InvalidSpreadsheetCell();
 		}
 		this.dataTypeHeader = dataTypeHeader;
 		this.data = data;

@@ -13,23 +13,23 @@ public class DataCellTest {
 	}
 
 	@Test public void thatEmptyEvaluatesToFalseWhenThereIsADataValueAndHeader()
-			throws Exception, InvalidSpreadsheetCellException {
+			throws Exception, InvalidSpreadsheetCell {
 		createDataCellForTest("Header", "Value");
 		assertFalse(dataCell.empty());
 	}
 
-	@Test public void thatColumnDataTypeHeaderCanExistWithBlankData() throws InvalidSpreadsheetCellException {
+	@Test public void thatColumnDataTypeHeaderCanExistWithBlankData() throws InvalidSpreadsheetCell {
 		createDataCellForTest("Header", "");
 		assertTrue("Header".equalsIgnoreCase(dataCell.getDataTypeHeader()));
 	}
 
-	@Test(expected = InvalidSpreadsheetCellException.class)
-	public void thatDataCannotExistWithoutColumnDataTypeHeaderInformation() throws InvalidSpreadsheetCellException {
+	@Test(expected = InvalidSpreadsheetCell.class)
+	public void thatDataCannotExistWithoutColumnDataTypeHeaderInformation() throws InvalidSpreadsheetCell {
 		createDataCellForTest("", "Value");
 	}
 
 	private void createDataCellForTest(String columnDataTypeHeader, String value)
-			throws InvalidSpreadsheetCellException {
+			throws InvalidSpreadsheetCell {
 		dataCell = new DataCell(columnDataTypeHeader, value);
 	}
 

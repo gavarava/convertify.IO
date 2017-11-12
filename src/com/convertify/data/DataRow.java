@@ -6,7 +6,6 @@ import java.util.List;
 public class DataRow {
 
 	private List<DataCell> dataCells = new ArrayList<>();
-	private boolean        header    = false;
 
 	public DataRow() {
 	}
@@ -17,10 +16,6 @@ public class DataRow {
 
 	public boolean isHeader() {
 		return false;
-	}
-
-	public void setHeader(boolean header) {
-		this.header = header;
 	}
 
 	public void add(DataCell dataCell) {

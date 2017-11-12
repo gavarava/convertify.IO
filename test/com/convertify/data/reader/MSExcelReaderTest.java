@@ -2,7 +2,7 @@ package com.convertify.data.reader;
 
 import com.convertify.data.DataCell;
 import com.convertify.data.DataRow;
-import com.convertify.data.InvalidSpreadsheetCellException;
+import com.convertify.data.InvalidSpreadsheetCell;
 import com.convertify.data.MSExcelDataSet;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.ss.usermodel.Cell;
@@ -69,7 +69,7 @@ public class MSExcelReaderTest {
 
 	@Test
 	public void shouldCreateADataCellFromOneExcelSheetCellAndHeader()
-			throws IOException, InvalidSpreadsheetCellException {
+			throws IOException, InvalidSpreadsheetCell {
 		setupExcelFileForTest();
 		fixMockedSheetForTest(2);
 		String header = "TestHeader";
